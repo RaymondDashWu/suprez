@@ -3,18 +3,52 @@ const router  = express.Router();
 const User    = require('../models/user');
 const auth    = require('./helpers/auth');
 var dotenv    = require('dotenv').config();
+const Keyword = require('../models/keyword');
+
+var request = require('request');
+
 
 var http      = require('http');
 var giphy     = require('giphy-api')();
 
 // GIPHY API - Gifs
+router.post('/speak'), (req, res) => {
+    var keyword = new Keyword(req.param)
+    keyword
+        .save()
+        .then(keyword => {
+            request.get('http://api.giphy.com/v1/gifs/search?q=:keyword&api_key=' + process.env.APIKEY)
+        })
+}
+
+
+// var url = 'http://api.giphy.com/v1/gifs/search?q=:keyword&api_key=' + process.env.APIKEY
+
+set as variable in get route than pass it in
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 router.get('/', function (req, res) {
     var queryString = req.query.term;
     console.log(queryString);
     // removes white spaces and restricted characters
     var term = encodeURIComponent(queryString);
     // putting the search term into GIPHY API
-    var url  = 'http://api.giphy.com/v1/gifs/search?q=' + term + '&api_key=' + process.env.APIKEY
+    var url = 'http://api.giphy.com/v1/gifs/search?q=:keyword&api_key=' + process.env.APIKEY
+    // var url  = 'http://api.giphy.com/v1/gifs/search?q=' + term + '&api_key=' + process.env.APIKEY
 
     // console.log(url);
 
